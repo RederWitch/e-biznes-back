@@ -1,0 +1,4 @@
+[debug] "not up to date. inChanged = true, force = false
+[debug] Updating ProjectRef(uri("file:/home/wiki/Pulpit/e-biznes-main/shop-project/shop-project/"), "root")...
+[debug] Done updating ProjectRef(uri("file:/home/wiki/Pulpit/e-biznes-main/shop-project/shop-project/"), "root")
+[warn] There may be incompatibilities among your library dependencies; run 'evicted' to see detailed eviction warnings.
