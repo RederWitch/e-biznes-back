@@ -2,11 +2,13 @@ package controllers
 
 import com.mohiva.play.silhouette.api.exceptions.ProviderException
 import com.mohiva.play.silhouette.impl.providers._
+
 import javax.inject.Inject
 import play.api.mvc.{Action, AnyContent, Cookie, Request}
 import play.filters.csrf.CSRF.Token
 import play.filters.csrf.{CSRF, CSRFAddToken}
 
+import java.net.URLDecoder
 import scala.concurrent.{ExecutionContext, Future}
 
 class SocialAuthController @Inject()(scc: DefaultSilhouetteControllerComponents, addToken: CSRFAddToken)(implicit ex: ExecutionContext) extends SilhouetteController(scc) {
@@ -22,7 +24,7 @@ class SocialAuthController @Inject()(scc: DefaultSilhouetteControllerComponents,
             _ <- authInfoRepository.save(profile.loginInfo, authInfo)
             authenticator <- authenticatorService.create(profile.loginInfo)
             value <- authenticatorService.init(authenticator)
-            result <- authenticatorService.embed(value, Redirect("https://e-shop-front.azurewebsites.net/"))
+            result <- authenticatorService.embed(value, Redirect(s"https://e-shop-front.azurewebsites.net/?email=${profile.email.get}&authenticator=${URLDecoder.decode(value.toString.split(",")(1), "UTF-8")}"))
           } yield {
             val Token(name, value) = CSRF.getToken.get
             result.withCookies(Cookie(name, value, httpOnly = false))
